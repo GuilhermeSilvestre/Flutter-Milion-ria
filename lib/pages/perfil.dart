@@ -16,7 +16,7 @@ class _PerfilState extends State<Perfil> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.lightBlueAccent, Colors.white],
+            colors: [Color(0xFF2E3078), Colors.white],
           ),
         ),
         child: const Center(

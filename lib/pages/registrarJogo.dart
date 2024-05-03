@@ -16,7 +16,7 @@ class _RegistrarJogoState extends State<RegistrarJogo> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.lightBlueAccent, Colors.white],
+            colors: [Color(0xFF2E3078), Colors.white],
           ),
         ),
         child: const Center(

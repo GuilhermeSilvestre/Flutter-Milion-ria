@@ -27,15 +27,27 @@ class _HomepageState extends State<Homepage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              iconData,
-              color: color,
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isSelected
+                    ? Colors.blue.withOpacity(0.3)
+                    : Colors.transparent,
+              ),
+              padding: const EdgeInsets.all(8),
+              child: Icon(
+                iconData,
+                color: color,
+              ),
             ),
+            const SizedBox(height: 8),
             Text(
               label,
               style: TextStyle(
                 fontSize: 12,
                 color: color,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
           ],
