@@ -60,7 +60,7 @@ class _HomepageState extends State<Homepage> {
 
   final List<Widget> _pages = [
     const Resultados(),
-    const GerarJogo(),
+    GerarJogo(),
     const RegistrarJogo(),
     const Perfil(),
   ];
