@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
 import 'package:milionaria/pages/perfil.dart';
@@ -47,7 +48,11 @@ class _RegistrarJogoState extends State<RegistrarJogo> {
                     labelText: 'Número do Concurso',
                     labelStyle: TextStyle(color: Colors.white),
                   ),
+                  style: const TextStyle(color: Colors.white),
                   keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                  ],
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor, insira o número do concurso';
@@ -74,7 +79,11 @@ class _RegistrarJogoState extends State<RegistrarJogo> {
                           labelStyle: const TextStyle(color: Colors.white),
                           labelText: 'Nº ${index + 1}',
                         ),
+                        style: const TextStyle(color: Colors.white),
                         keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                        ],
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, insira um número';
@@ -104,7 +113,11 @@ class _RegistrarJogoState extends State<RegistrarJogo> {
                           labelText: 'Nº ${index + 1}',
                           labelStyle: const TextStyle(color: Colors.white),
                         ),
+                        style: const TextStyle(color: Colors.white),
                         keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                        ],
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, insira um número';
@@ -148,24 +161,36 @@ class _RegistrarJogoState extends State<RegistrarJogo> {
       'numeros': _numerosController
           .map((controller) => int.parse(controller.text))
           .toList(),
-      'numerosExtras': _numerosExtrasController
+      'trevos': _numerosExtrasController
           .map((controller) => int.parse(controller.text))
           .toList(),
     };
 
     final File file = File('assets/jogosdousuario/jogosdousuario.json');
     List<Map<String, dynamic>> jogos = [];
+
+    //Verifica se o arquivo existe e se contém dados válidos
     if (await file.exists()) {
       final String fileContent = await file.readAsString();
-      jogos = json.decode(fileContent);
+      if (fileContent.isNotEmpty) {
+        // Se o arquivo não estiver vazio, decodifica seu conteúdo
+        jogos = List<Map<String, dynamic>>.from(json.decode(fileContent));
+      }
     }
 
+    // Adiciona o jogoData à lista de jogos
     jogos.add(jogoData);
+
+    // Sobrescreve o arquivo com a lista atualizada de jogos
     await file.writeAsString(json.encode(jogos));
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Jogo registrado com sucesso!'),
+        content: Text(
+          'Jogo registrado com sucesso!',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color.fromARGB(221, 127, 161, 190), // Cor de fundo
       ),
     );
 
