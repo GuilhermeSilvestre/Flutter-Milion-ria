@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
 import 'package:milionaria/pages/concursosregistrados.dart';
-import 'package:milionaria/pages/perfil.dart';
 
 class RegistrarJogo extends StatefulWidget {
   const RegistrarJogo({Key? key}) : super(key: key);
