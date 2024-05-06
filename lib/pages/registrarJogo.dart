@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
+import 'package:milionaria/pages/concursosregistrados.dart';
 import 'package:milionaria/pages/perfil.dart';
 
 class RegistrarJogo extends StatefulWidget {
@@ -142,7 +143,8 @@ class _RegistrarJogoState extends State<RegistrarJogo> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const Perfil()),
+                      MaterialPageRoute(
+                          builder: (context) => const ConcursosRegistrados()),
                     );
                   },
                   child: const Text('Consultar jogos registrados'),

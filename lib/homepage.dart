@@ -3,6 +3,7 @@ import 'package:milionaria/pages/gerarJogo.dart';
 import 'package:milionaria/pages/perfil.dart';
 import 'package:milionaria/pages/registrarJogo.dart';
 import 'package:milionaria/pages/resultados.dart';
+import 'package:milionaria/pages/sobre.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -91,6 +92,17 @@ class _HomepageState extends State<Homepage> {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Sobre()),
+              );
+            },
+            icon: const Icon(Icons.view_headline_rounded, color: Colors.white),
+          ),
+        ],
       ),
       body: _pages[_currentIndex],
       bottomNavigationBar: SafeArea(
