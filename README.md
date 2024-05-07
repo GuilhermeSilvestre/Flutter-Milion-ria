@@ -13,4 +13,4 @@ https://loteriascaixa-api.herokuapp.com/api/maismilionaria/
 
 O Modelo dos resultados pode ser encontrado em **resultados.json** 
 
-É possível utilizar esse arquivo caso algum dia o endpoind pare de funcionar (e adicionar os futuros resultados nele)
+É possível utilizar esse arquivo caso algum dia o endpoint pare de funcionar (e adicionar os futuros resultados nele)
