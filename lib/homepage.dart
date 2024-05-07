@@ -114,7 +114,7 @@ class _HomepageState extends State<Homepage> {
               _buildNavItem(Icons.list, 'Resultados', 0),
               _buildNavItem(Icons.add, 'Gerar novo jogo', 1),
               _buildNavItem(Icons.save, 'Registrar Jogo', 2),
-              _buildNavItem(Icons.person, 'Perfil', 3),
+              _buildNavItem(Icons.person, 'Seus Jogos', 3),
             ],
           ),
         ),
