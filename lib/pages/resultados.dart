@@ -2,6 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:milionaria/pages/detalhesconcurso.dart';
+
+class Concurso {
+  final int numero;
+  final String data;
+  final List<String> numerosSorteados;
+  final List<Map<String, dynamic>> premiacoes;
+
+  Concurso({
+    required this.numero,
+    required this.data,
+    required this.numerosSorteados,
+    required this.premiacoes,
+  });
+}
+
 class Resultados extends StatefulWidget {
   const Resultados({super.key});
 
@@ -26,24 +42,22 @@ class _ResultadosState extends State<Resultados> {
   }
 
   // Método para buscar os dados do sorteio no endpoint
-  Future<void> _fetchData() async {
+  Future<List<Concurso>> _fetchData() async {
     final response = await http.get(Uri.parse(
         'https://loteriascaixa-api.herokuapp.com/api/maismilionaria/'));
     if (response.statusCode == 200) {
-      final List<dynamic> dados = json.decode(response.body);
-      if (dados.isNotEmpty) {
-        final primeiroConcurso = dados.first;
-        setState(() {
-          loteria = primeiroConcurso['loteria'];
-          concurso = primeiroConcurso['concurso'];
-          data = primeiroConcurso['data'];
-          local = primeiroConcurso['local'];
-          dezenasOrdemSorteio =
-              List<String>.from(primeiroConcurso['dezenasOrdemSorteio']);
-          trevos = List<String>.from(primeiroConcurso['trevos']);
-          premiacoes =
-              List<Map<String, dynamic>>.from(primeiroConcurso['premiacoes']);
-        });
+      final List<dynamic> data = json.decode(response.body);
+      if (data.isNotEmpty) {
+        return data.map((concursoData) {
+          return Concurso(
+            numero: concursoData['concurso'],
+            data: concursoData['data'],
+            numerosSorteados:
+                List<String>.from(concursoData['dezenasOrdemSorteio']),
+            premiacoes:
+                List<Map<String, dynamic>>.from(concursoData['premiacoes']),
+          );
+        }).toList();
       } else {
         throw Exception('Data is empty');
       }
@@ -55,42 +69,39 @@ class _ResultadosState extends State<Resultados> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: loteria.isEmpty || premiacoes.isEmpty
-          ? Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xFF2E3078), Colors.white],
-                ),
-              ),
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            )
-          : Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xFF2E3078), Colors.white],
-                ),
-              ),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildInfoTile('Concurso', '$concurso'),
-                    _buildInfoTile('Data', data),
-                    const SizedBox(height: 20),
-                    _buildNumbersTile('Números Sorteados', dezenasOrdemSorteio),
-                    const SizedBox(height: 20),
-                    _buildPrizes(),
-                  ],
-                ),
-              ),
-            ),
+      body: FutureBuilder<List<Concurso>>(
+        future: _fetchData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            final concursos = snapshot.data!;
+            return ListView.builder(
+              itemCount: concursos.length,
+              itemBuilder: (context, index) {
+                final concurso = concursos[index];
+                return ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            DetalheConcurso(concurso: concurso),
+                      ),
+                    );
+                  },
+                  child: ListTile(
+                    title: Text('Concurso: ${concurso.numero}'),
+                    subtitle: Text('Data: ${concurso.data}'),
+                  ),
+                );
+              },
+            );
+          }
+        },
+      ),
     );
   }
 

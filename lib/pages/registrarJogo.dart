@@ -148,6 +148,13 @@ class _RegistrarJogoState extends State<RegistrarJogo> {
                   },
                   child: const Text('Consultar jogos registrados'),
                 ),
+                const SizedBox(height: 20.0),
+                ElevatedButton(
+                  onPressed: () {
+                    //
+                  },
+                  child: const Text('Fazer download dos seus jogos'),
+                ),
               ],
             ),
           ),
