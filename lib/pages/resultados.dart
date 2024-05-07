@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:milionaria/pages/detalhesconcurso.dart';
 
@@ -43,26 +44,42 @@ class _ResultadosState extends State<Resultados> {
 
   // Método para buscar os dados do sorteio no endpoint
   Future<List<Concurso>> _fetchData() async {
-    final response = await http.get(Uri.parse(
-        'https://loteriascaixa-api.herokuapp.com/api/maismilionaria/'));
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      if (data.isNotEmpty) {
-        return data.map((concursoData) {
-          return Concurso(
-            numero: concursoData['concurso'],
-            data: concursoData['data'],
-            numerosSorteados:
-                List<String>.from(concursoData['dezenasOrdemSorteio']),
-            premiacoes:
-                List<Map<String, dynamic>>.from(concursoData['premiacoes']),
-          );
-        }).toList();
+    try {
+      final response = await http.get(Uri.parse(
+          'https://loteriascaixa-api.herokuapp.com/api/maismilionaria/'));
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        if (data.isNotEmpty) {
+          return data.map((concursoData) {
+            return Concurso(
+              numero: concursoData['concurso'],
+              data: concursoData['data'],
+              numerosSorteados:
+                  List<String>.from(concursoData['dezenasOrdemSorteio']),
+              premiacoes:
+                  List<Map<String, dynamic>>.from(concursoData['premiacoes']),
+            );
+          }).toList();
+        } else {
+          throw Exception('Data is empty');
+        }
       } else {
-        throw Exception('Data is empty');
+        throw Exception('Failed to load data');
       }
-    } else {
-      throw Exception('Failed to load data');
+    } catch (e) {
+      // Se falhar, carregue os dados do arquivo JSON local
+      final String jsonString = await rootBundle.loadString('resultados.json');
+      final List<dynamic> data = json.decode(jsonString);
+      return data.map((concursoData) {
+        return Concurso(
+          numero: concursoData['concurso'],
+          data: concursoData['data'],
+          numerosSorteados:
+              List<String>.from(concursoData['dezenasOrdemSorteio']),
+          premiacoes:
+              List<Map<String, dynamic>>.from(concursoData['premiacoes']),
+        );
+      }).toList();
     }
   }
 
