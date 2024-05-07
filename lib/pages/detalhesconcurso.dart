@@ -42,8 +42,6 @@ class DetalheConcurso extends StatelessWidget {
       ),
     );
   }
-
-  // Métodos _buildInfoTile e _buildNumbersTile são os mesmos que você já implementou anteriormente
 }
 
 // Constrói um tile para exibir uma informação do sorteio
@@ -77,12 +75,19 @@ Widget _buildNumbersTile(String label, List<String> numbers) {
       const SizedBox(height: 10),
       Wrap(
         spacing: 10,
-        children: numbers.map((number) {
+        children: numbers.asMap().entries.map((entry) {
           // Verifica se o número é um trevo
+          final index = entry.key;
+          final number = entry.value;
+          Color backgroundColor = Colors.blue;
+          if (index >= numbers.length - 2) {
+            // Os últimos dois números
+            backgroundColor = Colors.green;
+          }
           return Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: backgroundColor,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
@@ -116,7 +121,7 @@ Widget _buildPrizes(List<Map<String, dynamic>> premiacoes) {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Color.fromARGB(255, 143, 24, 125),
               ),
             ),
             subtitle: Text(
@@ -124,7 +129,7 @@ Widget _buildPrizes(List<Map<String, dynamic>> premiacoes) {
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Color.fromARGB(255, 43, 50, 15),
               ),
             ),
             trailing: Text(
@@ -132,7 +137,7 @@ Widget _buildPrizes(List<Map<String, dynamic>> premiacoes) {
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Color.fromARGB(255, 40, 113, 35),
               ),
             ),
           );

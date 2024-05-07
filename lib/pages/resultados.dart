@@ -109,9 +109,20 @@ class _ResultadosState extends State<Resultados> {
                       ),
                     );
                   },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color.fromARGB(255, 25, 28, 88)),
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                      const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                      ),
+                    ),
+                  ),
                   child: ListTile(
-                    title: Text('Concurso: ${concurso.numero}'),
-                    subtitle: Text('Data: ${concurso.data}'),
+                    title: Text('Concurso: ${concurso.numero}',
+                        style: const TextStyle(color: Colors.white)),
+                    subtitle: Text('Data: ${concurso.data}',
+                        style: const TextStyle(color: Colors.white)),
                   ),
                 );
               },
