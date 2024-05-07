@@ -51,6 +51,7 @@ class _PerfilState extends State<Perfil> {
             child: _jogos.isEmpty
                 ? const Text(
                     'Você ainda não possui jogos registrados.',
+                    textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )
                 : _buildJogosList(),
