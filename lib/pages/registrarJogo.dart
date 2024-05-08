@@ -139,17 +139,17 @@ class _RegistrarJogoState extends State<RegistrarJogo> {
                   child: const Text('Registrar Jogo'),
                 ),
                 const SizedBox(height: 20.0),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ConcursosRegistrados()),
-                    );
-                  },
-                  child: const Text('Consultar jogos registrados'),
-                ),
-                const SizedBox(height: 20.0),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (context) => const ConcursosRegistrados()),
+                //     );
+                //   },
+                //   child: const Text('Consultar jogos registrados'),
+                // ),
+                // const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: _shareJogo,
                   child: const Text('Compartilhar seus jogos'),

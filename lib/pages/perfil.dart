@@ -51,13 +51,29 @@ class _PerfilState extends State<Perfil> {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
-            child: _jogos.isEmpty
-                ? const Text(
-                    'Você ainda não possui jogos registrados.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  )
-                : _buildJogosList(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _jogos.isEmpty
+                    ? const Text(
+                        'Você ainda não possui jogos registrados.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      )
+                    : Expanded(child: _buildJogosList()),
+                Visibility(
+                  visible: _jogos.isNotEmpty,
+                  child: SizedBox(
+                    height: 40,
+                    child: ElevatedButton(
+                      onPressed: _deleteAllJogos,
+                      child: const Text('Deletar todos os registros'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -124,5 +140,30 @@ class _PerfilState extends State<Perfil> {
         );
       }).toList(),
     );
+  }
+
+  void _deleteAllJogos() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/jogosdousuario.json');
+      if (await file.exists()) {
+        await file.delete();
+        setState(() {
+          _jogos = [];
+        });
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Jogos deletados!',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Color.fromARGB(221, 223, 100, 83), // Cor de fundo
+        ),
+      );
+    } catch (e) {
+      print('Erro ao deletar jogos: $e');
+    }
   }
 }
