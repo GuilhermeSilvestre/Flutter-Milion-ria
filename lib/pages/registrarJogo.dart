@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:milionaria/pages/concursosregistrados.dart';
+//import 'package:milionaria/pages/concursosregistrados.dart';
 import 'package:path_provider/path_provider.dart';
 
 class RegistrarJogo extends StatefulWidget {
