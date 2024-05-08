@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Perfil extends StatefulWidget {
-  const Perfil({Key? key}) : super(key: key);
+  const Perfil({super.key});
 
   @override
   State<Perfil> createState() => _PerfilState();
@@ -21,7 +22,8 @@ class _PerfilState extends State<Perfil> {
 
   Future<void> _loadJogos() async {
     try {
-      final file = File('assets/jogosdousuario/jogosdousuario.json');
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/jogosdousuario.json');
       if (await file.exists()) {
         final fileContent = await file.readAsString();
         setState(() {

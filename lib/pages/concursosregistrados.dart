@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:flutter/widgets.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ConcursosRegistrados extends StatefulWidget {
-  const ConcursosRegistrados({Key? key}) : super(key: key);
+  const ConcursosRegistrados({super.key});
 
   @override
   State<ConcursosRegistrados> createState() => _ConcursosRegistradosState();
@@ -22,7 +21,8 @@ class _ConcursosRegistradosState extends State<ConcursosRegistrados> {
 
   Future<void> _loadJogos() async {
     try {
-      final file = File('assets/jogosdousuario/jogosdousuario.json');
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/jogosdousuario.json');
       if (await file.exists()) {
         final fileContent = await file.readAsString();
         setState(() {
@@ -84,28 +84,8 @@ class _ConcursosRegistradosState extends State<ConcursosRegistrados> {
                   child: SizedBox(
                     height: 40,
                     child: ElevatedButton(
-                      onPressed: () async {
-                        final file =
-                            File('assets/jogosdousuario/jogosdousuario.json');
-                        if (await file.exists()) {
-                          await file.delete();
-                          setState(() {
-                            _jogos = [];
-                          });
-                        }
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Jogos deletados!',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            backgroundColor: Color.fromARGB(
-                                221, 223, 100, 83), // Cor de fundo
-                          ),
-                        );
-                      },
-                      child: const Text('Deletas todos registros'),
+                      onPressed: _deleteAllJogos,
+                      child: const Text('Deletar todos os registros'),
                     ),
                   ),
                 ),
@@ -163,5 +143,30 @@ class _ConcursosRegistradosState extends State<ConcursosRegistrados> {
         );
       }).toList(),
     );
+  }
+
+  void _deleteAllJogos() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/jogosdousuario.json');
+      if (await file.exists()) {
+        await file.delete();
+        setState(() {
+          _jogos = [];
+        });
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Jogos deletados!',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Color.fromARGB(221, 223, 100, 83), // Cor de fundo
+        ),
+      );
+    } catch (e) {
+      print('Erro ao deletar jogos: $e');
+    }
   }
 }

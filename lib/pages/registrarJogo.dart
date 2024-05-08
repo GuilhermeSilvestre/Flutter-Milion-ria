@@ -4,9 +4,10 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
 import 'package:milionaria/pages/concursosregistrados.dart';
+import 'package:path_provider/path_provider.dart';
 
 class RegistrarJogo extends StatefulWidget {
-  const RegistrarJogo({Key? key}) : super(key: key);
+  const RegistrarJogo({super.key});
 
   @override
   State<RegistrarJogo> createState() => _RegistrarJogoState();
@@ -174,10 +175,11 @@ class _RegistrarJogoState extends State<RegistrarJogo> {
           .toList(),
     };
 
-    final File file = File('assets/jogosdousuario/jogosdousuario.json');
+    final directory = await getApplicationDocumentsDirectory();
+    final File file = File('${directory.path}/jogosdousuario.json');
     List<Map<String, dynamic>> jogos = [];
 
-    //Verifica se o arquivo existe e se contém dados válidos
+    // Verifica se o arquivo existe e se contém dados válidos
     if (await file.exists()) {
       final String fileContent = await file.readAsString();
       if (fileContent.isNotEmpty) {
