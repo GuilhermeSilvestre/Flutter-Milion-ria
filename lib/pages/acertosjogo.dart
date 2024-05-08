@@ -47,18 +47,23 @@ class _AcertosJogoState extends State<AcertosJogo> {
     }
   }
 
-  Widget _buildNumberBall(String number, {bool isLastTwo = false}) {
+  Widget _buildNumberBall(String number,
+      {bool isLastTwo = false, bool isGreen = false}) {
+    // Adiciona um zero à esquerda se o número tiver apenas um dígito
+    String formattedNumber = number.padLeft(2, '0');
+
     return Container(
       margin: const EdgeInsets.all(5),
       width: 33,
       height: 33,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: isLastTwo ? Colors.green : Colors.blue,
+        color:
+            isLastTwo ? Colors.green : (isGreen ? Colors.green : Colors.blue),
       ),
       child: Center(
         child: Text(
-          number,
+          formattedNumber,
           style: const TextStyle(color: Colors.white),
         ),
       ),
@@ -151,8 +156,7 @@ class _AcertosJogoState extends State<AcertosJogo> {
                           for (var numero in numerosUsuario)
                             _buildNumberBall(numero.toString()),
                           for (var trevo in widget.trevos)
-                            _buildNumberBall(trevo.toString(),
-                                isLastTwo: false),
+                            _buildNumberBall(trevo.toString(), isLastTwo: true),
                         ],
                       ),
                     ],
