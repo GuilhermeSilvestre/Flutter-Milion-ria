@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:milionaria/pages/acertosjogo.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Perfil extends StatefulWidget {
@@ -68,20 +69,34 @@ class _PerfilState extends State<Perfil> {
       itemCount: _jogos.length,
       itemBuilder: (context, index) {
         final jogo = _jogos[index];
-        return Card(
-          color: Colors.transparent,
-          elevation: 0,
-          child: ListTile(
-            title: Text(
-              'Concurso: ${jogo['concurso']}',
-              style: const TextStyle(color: Colors.white),
-            ),
-            subtitle: Row(
-              children: [
-                _buildNumeroBolas(jogo['numeros'], Colors.blue),
-                const SizedBox(width: 10),
-                _buildNumeroBolas(jogo['trevos'], Colors.green),
-              ],
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AcertosJogo(
+                  concurso: jogo['concurso'],
+                  numeros: jogo['numeros'],
+                  trevos: jogo['trevos'],
+                ),
+              ),
+            );
+          },
+          child: Card(
+            color: Colors.transparent,
+            elevation: 0,
+            child: ListTile(
+              title: Text(
+                'Concurso: ${jogo['concurso']}',
+                style: const TextStyle(color: Colors.white),
+              ),
+              subtitle: Row(
+                children: [
+                  _buildNumeroBolas(jogo['numeros'], Colors.blue),
+                  const SizedBox(width: 10),
+                  _buildNumeroBolas(jogo['trevos'], Colors.green),
+                ],
+              ),
             ),
           ),
         );
