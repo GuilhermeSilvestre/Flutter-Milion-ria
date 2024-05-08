@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
-
+import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:milionaria/pages/concursosregistrados.dart';
 import 'package:path_provider/path_provider.dart';
@@ -151,10 +151,8 @@ class _RegistrarJogoState extends State<RegistrarJogo> {
                 ),
                 const SizedBox(height: 20.0),
                 ElevatedButton(
-                  onPressed: () {
-                    //
-                  },
-                  child: const Text('Fazer download dos seus jogos'),
+                  onPressed: _shareJogo,
+                  child: const Text('Compartilhar seus jogos'),
                 ),
               ],
             ),
@@ -208,5 +206,31 @@ class _RegistrarJogoState extends State<RegistrarJogo> {
     _concursoController.clear();
     _numerosController.forEach((controller) => controller.clear());
     _numerosExtrasController.forEach((controller) => controller.clear());
+  }
+
+  void _shareJogo() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final File file = File('${directory.path}/jogosdousuario.json');
+
+    // Verifica se o arquivo existe e se contém dados válidos
+    if (await file.exists()) {
+      final String fileContent = await file.readAsString();
+      if (fileContent.isNotEmpty) {
+        Share.shareFiles(['${file.path}'], text: 'Aqui estão meus jogos.');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content:
+                Text('O arquivo de jogos não foi encontrado ou está vazio.'),
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('O arquivo de jogos não foi encontrado ou está vazio.'),
+        ),
+      );
+    }
   }
 }
